@@ -1,3 +1,9 @@
+const path = require('path')
+
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
+
 const vueConfig = {
   devServer: {
     port: 2222
@@ -25,10 +31,16 @@ const vueConfig = {
           }
         }
       }
+    },
+    resolve: {
+      alias: {
+        '@': resolve('src')
+      }
     }
   },
   pluginOptions: {
     electronBuilder: {
+      outputDir: 'build',
       mainProcessFile: 'src/main/main.js',
       rendererProcessFile: 'src/renderer/main.js'
     }

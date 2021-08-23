@@ -5,6 +5,7 @@ import { is } from 'electron-util'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import createTray from './tray'
 
+const appWindows = []
 let mainWindow
 
 const isSingleInstance = app.requestSingleInstanceLock()
@@ -32,9 +33,9 @@ const readyFunction = async() => {
 
 async function createWindow() {
   mainWindow = new BrowserWindow({
+    show: true,
     width: 800,
     height: 480,
-    show: false,
     frame: false,
     maximizable: false,
     fullscreenable: false,
@@ -42,7 +43,7 @@ async function createWindow() {
       devTools: true,
       webSecurity: false,
       nodeIntegration: true,
-      contextIsolation: true,
+      contextIsolation: false,
       enableRemoteModule: true,
       backgroundThrottling: false
     }
@@ -57,8 +58,8 @@ async function createWindow() {
   }
 
   mainWindow.once('ready-to-show', () => {
-    mainWindow.show()
-    mainWindow.focus()
+    // mainWindow.show()
+    // mainWindow.focus()
   })
 
   mainWindow.on('closed', () => {
@@ -81,6 +82,27 @@ function registerListener() {
   // 打开关闭开发者工具
   ipcMain.on('mtools:toggle-devtools', () => {
     mainWindow.webContents.toggleDevTools()
+  })
+  // 最小化
+  ipcMain.on('mtools:minimize', (event) => {
+    BrowserWindow.fromWebContents(event.sender).minimize()
+  })
+  // 隐藏
+  ipcMain.on('mtools:hide', (event) => {
+    BrowserWindow.fromWebContents(event.sender).hide()
+  })
+  // 关闭窗口
+  ipcMain.on('mtools:close', (event) => {
+    BrowserWindow.fromWebContents(event.sender).destroy()
+  })
+  // 退出
+  ipcMain.on('mtools:exit', () => {
+    appWindows.forEach((window) => {
+      if (window.isModal()) {
+        window.destroy()
+      }
+    })
+    app.exit()
   })
 }
 
