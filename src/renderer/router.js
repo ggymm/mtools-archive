@@ -13,22 +13,22 @@ const routes = [
   {
     path: '/coder',
     name: 'Coder',
-    component: () => import('@/renderer/views/coder')
+    component: () => import('@/renderer/views/coder/index.vue')
   },
   {
     path: '/json',
     name: 'Json',
-    component: () => import('@/renderer/views/json')
+    component: () => import('@/renderer/views/json/index.vue')
   },
   {
     path: '/magnet',
     name: 'Magnet',
-    component: () => import('@/renderer/views/magnet')
+    component: () => import('@/renderer/views/magnet/index.vue')
   },
   {
     path: '/video',
     name: 'Video',
-    component: () => import('@/renderer/views/video')
+    component: () => import('@/renderer/views/video/index.vue')
   }
 ]
 

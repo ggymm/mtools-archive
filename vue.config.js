@@ -41,8 +41,32 @@ const vueConfig = {
   pluginOptions: {
     electronBuilder: {
       outputDir: 'build',
-      mainProcessFile: 'src/main/main.js',
-      rendererProcessFile: 'src/renderer/main.js'
+      rendererProcessFile: 'src/renderer/main.js',
+      builderOptions: {
+        appId: 'com.ggymm.mtools',
+        productName: 'mtools',
+        copyright: 'Copyright © 2021',
+        directories: {
+          output: './build'
+        },
+        win: {
+          target: [
+            {
+              target: 'nsis',
+              arch: [
+                'x64'
+              ]
+            }
+          ]
+        },
+        nsis: {
+          oneClick: false,
+          allowElevation: true,
+          allowToChangeInstallationDirectory: true,
+          createDesktopShortcut: true,
+          createStartMenuShortcut: true
+        }
+      }
     }
   }
 }

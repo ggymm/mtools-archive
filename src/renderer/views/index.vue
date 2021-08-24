@@ -33,7 +33,6 @@
 <script>
 import '../assets/iconfont.js'
 import { $, on } from '../utils/dom'
-import { isExist } from '../utils/fs'
 import { requireFunc } from '../utils/require'
 import IconSvg from '../components/IconSvg/index'
 
@@ -48,23 +47,48 @@ const menus = [
 const apps = {
   coder: {
     icon: 'icon-coder',
-    title: '代码生成器'
+    title: '代码生成器',
+    window: {
+      width: 1000,
+      height: 750,
+      frame: true
+    }
   },
   magnet: {
     icon: 'icon-magnet',
-    title: '磁力链接搜索'
+    title: '磁力链接搜索',
+    window: {
+      width: 800,
+      height: 600,
+      frame: true
+    }
   },
   json: {
     icon: 'icon-coder',
-    title: 'JSON工具集'
+    title: 'JSON工具集',
+    window: {
+      width: 800,
+      height: 600,
+      frame: true
+    }
   },
   android: {
     icon: 'icon-android',
-    title: 'Android工具集'
+    title: 'Android工具集',
+    window: {
+      width: 800,
+      height: 600,
+      frame: true
+    }
   },
   video: {
     icon: 'icon-video',
-    title: '音视频工具箱'
+    title: '音视频工具箱',
+    window: {
+      width: 800,
+      height: 600,
+      frame: true
+    }
   }
 }
 
@@ -93,8 +117,13 @@ export default {
       }
     },
     handleApp(key) {
-      console.log(isExist('/Temp'))
-      console.log('打开应用', key)
+      const { title, window } = apps[key]
+
+      ipcRenderer.send(`mtools:open-app`, {
+        title: title,
+        path: key, frame: window.frame,
+        width: window.width, height: window.height
+      })
     }
   }
 }

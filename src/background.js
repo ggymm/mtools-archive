@@ -3,10 +3,11 @@
 import { app, protocol, dialog, ipcMain, BrowserWindow } from 'electron'
 import { is } from 'electron-util'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import createTray from './tray'
+import createTray from './main/tray'
 
-const appWindows = []
 let mainWindow
+const appWindows = new Set()
+const appWindowTitles = new Set()
 
 const isSingleInstance = app.requestSingleInstanceLock()
 if (!isSingleInstance) {
@@ -23,12 +24,6 @@ if (!isSingleInstance) {
   protocol.registerSchemesAsPrivileged([
     { scheme: 'app', privileges: { secure: true, standard: true }}
   ])
-}
-
-const readyFunction = async() => {
-  await createWindow()
-  await registerListener()
-  createTray(mainWindow)
 }
 
 async function createWindow() {
@@ -51,7 +46,7 @@ async function createWindow() {
 
   if (is.development) {
     await mainWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-    mainWindow.webContents.openDevTools({ mode: 'undocked' })
+    mainWindow.webContents.openDevTools({ mode: 'bottom' })
   } else {
     createProtocol('app')
     await mainWindow.loadURL('app://./index.html')
@@ -74,11 +69,54 @@ async function createWindow() {
   })
 }
 
+async function createAppWindow(args) {
+  if (appWindowTitles.has(args.title)) {
+    appWindows.forEach((window) => {
+      if (window.webContents.getTitle() === args.title) {
+        if (window.isMinimized()) {
+          window.restore()
+        }
+        window.focus()
+      }
+    })
+  } else {
+    let appWindow = new BrowserWindow({
+      show: true,
+      width: args.width,
+      height: args.height,
+      title: args.title,
+      frame: args.frame,
+      webPreferences: {
+        webSecurity: false,
+        nodeIntegration: true,
+        contextIsolation: false
+      }
+    })
+
+    if (args.frame) {
+      appWindow.setMenu(null)
+    }
+
+    if (is.development) {
+      await appWindow.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}${args.path}`)
+      appWindow.webContents.openDevTools({ mode: 'bottom' })
+    } else {
+      createProtocol('app')
+      await appWindow.loadURL(`app://./index.html${args.path}`)
+    }
+
+    appWindow.on('closed', () => {
+      appWindow = null
+      appWindows.delete(appWindows)
+      appWindowTitles.delete(args.title)
+    })
+
+    appWindows.add(appWindow)
+    appWindowTitles.add(args.title)
+  }
+}
+
 function registerListener() {
-  // 创建窗口
-  ipcMain.on('mtools:open-app', async(e, args) => {
-    console.log(args)
-  })
   // 打开关闭开发者工具
   ipcMain.on('mtools:toggle-devtools', () => {
     mainWindow.webContents.toggleDevTools()
@@ -91,10 +129,6 @@ function registerListener() {
   ipcMain.on('mtools:hide', (event) => {
     BrowserWindow.fromWebContents(event.sender).hide()
   })
-  // 关闭窗口
-  ipcMain.on('mtools:close', (event) => {
-    BrowserWindow.fromWebContents(event.sender).destroy()
-  })
   // 退出
   ipcMain.on('mtools:exit', () => {
     appWindows.forEach((window) => {
@@ -104,6 +138,20 @@ function registerListener() {
     })
     app.exit()
   })
+  // 创建窗口
+  ipcMain.on('mtools:open-app', async(e, args) => {
+    await createAppWindow(args)
+  })
+  // 关闭窗口
+  ipcMain.on('mtools:close', (event) => {
+    BrowserWindow.fromWebContents(event.sender).destroy()
+  })
+}
+
+const readyFunction = async() => {
+  await createWindow()
+  await registerListener()
+  createTray(mainWindow)
 }
 
 app.on('ready', readyFunction)

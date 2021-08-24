@@ -8,10 +8,11 @@
     "electron:serve": "vue-cli-service electron:serve",
     "electron:build": "vue-cli-service electron:build"
   },
-  "main": "main/index.js",
+  "main": "background.js",
   "dependencies": {
     "core-js": "^3.6.5",
     "electron-util": "^0.17.0",
+    "mysql": "^2.18.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
