@@ -3,7 +3,8 @@
 import { app, protocol, dialog, ipcMain, BrowserWindow } from 'electron'
 import { is } from 'electron-util'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import createTray from './main/tray'
+import registerApis from './events'
+import createTray from './tray'
 
 let mainWindow
 const appWindows = new Set()
@@ -45,11 +46,12 @@ async function createWindow() {
   })
 
   if (is.development) {
-    await mainWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+    await mainWindow.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}#/index`)
     mainWindow.webContents.openDevTools({ mode: 'bottom' })
   } else {
     createProtocol('app')
-    await mainWindow.loadURL('app://./index.html')
+    await mainWindow.loadURL('app://./index.html#/index')
+    mainWindow.webContents.openDevTools({ mode: 'bottom' })
   }
 
   mainWindow.once('ready-to-show', () => {
@@ -66,6 +68,31 @@ async function createWindow() {
     setImmediate(() => {
       mainWindow.focus()
     })
+  })
+
+  // 打开关闭开发者工具
+  ipcMain.on('mtools:toggle-devtools', () => {
+    mainWindow.webContents.toggleDevTools()
+  })
+  // 最小化
+  ipcMain.on('mtools:minimize', (event) => {
+    BrowserWindow.fromWebContents(event.sender).minimize()
+  })
+  // 隐藏
+  ipcMain.on('mtools:hide', (event) => {
+    BrowserWindow.fromWebContents(event.sender).hide()
+  })
+  // 退出
+  ipcMain.on('mtools:exit', () => {
+    app.exit()
+  })
+  // 创建窗口
+  ipcMain.on('mtools:open-app', async(e, args) => {
+    await createAppWindow(args)
+  })
+  // 关闭窗口
+  ipcMain.on('mtools:close', (event) => {
+    BrowserWindow.fromWebContents(event.sender).destroy()
   })
 }
 
@@ -98,11 +125,11 @@ async function createAppWindow(args) {
     }
 
     if (is.development) {
-      await appWindow.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}${args.path}`)
+      await appWindow.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}#/${args.path}`)
       appWindow.webContents.openDevTools({ mode: 'bottom' })
     } else {
       createProtocol('app')
-      await appWindow.loadURL(`app://./index.html${args.path}`)
+      await appWindow.loadURL(`app://./index.html#/${args.path}`)
     }
 
     appWindow.on('closed', () => {
@@ -116,41 +143,9 @@ async function createAppWindow(args) {
   }
 }
 
-function registerListener() {
-  // 打开关闭开发者工具
-  ipcMain.on('mtools:toggle-devtools', () => {
-    mainWindow.webContents.toggleDevTools()
-  })
-  // 最小化
-  ipcMain.on('mtools:minimize', (event) => {
-    BrowserWindow.fromWebContents(event.sender).minimize()
-  })
-  // 隐藏
-  ipcMain.on('mtools:hide', (event) => {
-    BrowserWindow.fromWebContents(event.sender).hide()
-  })
-  // 退出
-  ipcMain.on('mtools:exit', () => {
-    appWindows.forEach((window) => {
-      if (window.isModal()) {
-        window.destroy()
-      }
-    })
-    app.exit()
-  })
-  // 创建窗口
-  ipcMain.on('mtools:open-app', async(e, args) => {
-    await createAppWindow(args)
-  })
-  // 关闭窗口
-  ipcMain.on('mtools:close', (event) => {
-    BrowserWindow.fromWebContents(event.sender).destroy()
-  })
-}
-
 const readyFunction = async() => {
   await createWindow()
-  await registerListener()
+  registerApis()
   createTray(mainWindow)
 }
 

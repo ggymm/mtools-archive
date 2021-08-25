@@ -13,17 +13,17 @@
           <div class="menu-icon">
             <icon-svg class="icon" :type="menu['icon']" />
           </div>
-          <span class="menu-title">{{ menu['title'] }}</span>
+          <span class="menu-title">{{ menu["title"] }}</span>
         </div>
       </div>
     </div>
     <div class="apps-content no-drag">
       <div id="scroll" class="scroll">
-        <div v-for="(value, key) in apps" :key="key" class="app" @click="handleApp(key)">
+        <div v-for="(value, key) in apps" :key="key" class="app" @click="handleOpenApp(key)">
           <div class="app-icon">
             <icon-svg class="icon" :type="value['icon']" />
           </div>
-          <div class="app-title">{{ value['title'] }}</div>
+          <div class="app-title">{{ value["title"] }}</div>
         </div>
       </div>
     </div>
@@ -31,10 +31,10 @@
 </template>
 
 <script>
-import '../assets/iconfont.js'
-import { $, on } from '../utils/dom'
-import { requireFunc } from '../utils/require'
-import IconSvg from '../components/IconSvg/index'
+import '@/assets/iconfont.js'
+import { $, on } from '@/utils/dom'
+import { requireFunc } from '@/utils/require'
+import IconSvg from '@/components/IconSvg/index'
 
 const { ipcRenderer } = requireFunc('electron')
 
@@ -116,7 +116,7 @@ export default {
         ipcRenderer.send(`mtools:${key}`)
       }
     },
-    handleApp(key) {
+    handleOpenApp(key) {
       const { title, window } = apps[key]
 
       ipcRenderer.send(`mtools:open-app`, {
@@ -128,3 +128,109 @@ export default {
   }
 }
 </script>
+<style lang="less">
+
+.index {
+  padding: 60px;
+
+  .top-bar {
+    display: flex;
+    align-items: center;
+
+    .logo {
+      font-size: 48px;
+    }
+
+    .title {
+      font-size: 30px;
+      margin-left: 16px;
+    }
+
+    .space {
+      flex-grow: 1;
+    }
+
+    .menus {
+      display: flex;
+
+      .menu {
+        width: 50px;
+        margin: 0 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: default;
+
+        &:hover {
+          color: #2196f3;
+        }
+
+        .menu-icon {
+          margin: 5px;
+          font-size: 20px;
+        }
+
+        .menu-title {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  .apps-content {
+    width: 100%;
+    margin-top: 50px;
+    position: relative;
+
+    .scroll {
+      overflow-x: auto;
+      overflow-y: hidden;
+      display: flex;
+      padding: 15px 0;
+
+      &::-webkit-scrollbar {
+        height: 5px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background-color: #dcdfe6;
+        transition: 0.2s;
+      }
+
+      &::-webkit-scrollbar-track {
+        border-radius: 5px;
+      }
+
+      .app {
+        width: 200px;
+        height: 200px;
+        margin: 10px;
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        border: 1px solid #EBEEF5;
+        transition: 0.2s;
+
+        &:hover {
+          transform: scale(1.05);
+          color: #2196f3;
+        }
+
+        .app-icon {
+          font-size: 80px;
+        }
+
+        .app-title {
+          font-size: 16px;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}
+</style>

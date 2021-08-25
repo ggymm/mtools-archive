@@ -34,20 +34,31 @@ const vueConfig = {
     },
     resolve: {
       alias: {
-        '@': resolve('src')
+        '@': resolve('src/renderer'),
+        '#': resolve('src/common')
       }
     }
   },
   pluginOptions: {
     electronBuilder: {
+      chainWebpackMainProcess: config => {
+        config.resolve.alias
+          .set('@', resolve('src/renderer'))
+          .set('#', resolve('src/common'))
+      },
       outputDir: 'build',
-      rendererProcessFile: 'src/renderer/main.js',
+      mainProcessFile: 'src/main/main.js',
+      mainProcessWatch: [
+        'src/main/**/*'
+      ],
+      rendererProcessFile: 'src/renderer/app.js',
       builderOptions: {
         appId: 'com.ggymm.mtools',
         productName: 'mtools',
         copyright: 'Copyright © 2021',
+        asar: true,
         directories: {
-          output: './build'
+          output: 'build'
         },
         win: {
           target: [

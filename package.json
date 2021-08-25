@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "npm run electron:serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "electron:serve": "vue-cli-service electron:serve",
@@ -10,11 +11,12 @@
   },
   "main": "background.js",
   "dependencies": {
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "electron-util": "^0.17.0",
-    "mysql": "^2.18.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vuescroll": "^4.17.3",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
