@@ -3,7 +3,7 @@
     <div class="top-bar">
       <div class="logo">
         <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-toolkit" />
+          <use xlink:href="#toolkit" />
         </svg>
       </div>
       <div class="title">开发工具箱</div>
@@ -39,14 +39,14 @@ import IconSvg from '@/components/IconSvg/index'
 const { ipcRenderer } = requireFunc('electron')
 
 const menus = [
-  { key: 'setting', icon: 'icon-setting', title: '设置' },
-  { key: 'minimize', icon: 'icon-minimize', title: '最小化' },
-  { key: 'hide', icon: 'icon-hide', title: '隐藏' },
-  { key: 'exit', icon: 'icon-exit', title: '退出' }
+  { key: 'setting', icon: 'setting', title: '设置' },
+  { key: 'minimize', icon: 'minimize', title: '最小化' },
+  { key: 'hide', icon: 'hide', title: '隐藏' },
+  { key: 'exit', icon: 'exit', title: '退出' }
 ]
 const apps = {
   coder: {
-    icon: 'icon-coder',
+    icon: 'coder',
     title: '代码生成器',
     window: {
       width: 1000,
@@ -55,7 +55,7 @@ const apps = {
     }
   },
   magnet: {
-    icon: 'icon-magnet',
+    icon: 'magnet',
     title: '磁力链接搜索',
     window: {
       width: 800,
@@ -64,7 +64,7 @@ const apps = {
     }
   },
   json: {
-    icon: 'icon-coder',
+    icon: 'coder',
     title: 'JSON工具集',
     window: {
       width: 800,
@@ -73,7 +73,7 @@ const apps = {
     }
   },
   android: {
-    icon: 'icon-android',
+    icon: 'android',
     title: 'Android工具集',
     window: {
       width: 800,
@@ -82,7 +82,7 @@ const apps = {
     }
   },
   video: {
-    icon: 'icon-video',
+    icon: 'video',
     title: '音视频工具箱',
     window: {
       width: 800,

@@ -21,6 +21,18 @@ ul, li {
   overflow: hidden;
 }
 
+.inline-center {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 html, body {
   margin: 0;
   padding: 0;

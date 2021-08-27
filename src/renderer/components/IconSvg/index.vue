@@ -18,7 +18,7 @@ export default {
   },
   computed: {
     iconName() {
-      return `#${this.type}`
+      return `#icon-${this.type}`
     }
   }
 }

@@ -47,11 +47,11 @@ async function createWindow() {
 
   if (is.development) {
     await mainWindow.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}#/index`)
-    mainWindow.webContents.openDevTools({ mode: 'bottom' })
+    // mainWindow.webContents.openDevTools({ mode: 'bottom' })
   } else {
     createProtocol('app')
     await mainWindow.loadURL('app://./index.html#/index')
-    mainWindow.webContents.openDevTools({ mode: 'bottom' })
+    // mainWindow.webContents.openDevTools({ mode: 'bottom' })
   }
 
   mainWindow.once('ready-to-show', () => {
