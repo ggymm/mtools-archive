@@ -17,6 +17,9 @@ const vueConfig = {
   },
   productionSourceMap: false,
   configureWebpack: {
+    entry: {
+      app: resolve('src/renderer/app.js')
+    },
     optimization: {
       splitChunks: {
         chunks: 'all',

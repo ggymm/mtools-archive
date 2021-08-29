@@ -10,7 +10,7 @@
             <span class="switcher inline-center" @click="toggleShowTables(db)">
               <icon-svg :type="db.open ? 'caret-down' : 'caret-right'" />
             </span>
-            <span class="content-wrapper" @click="toggleShowTables(db)" @dblclick="toggleShowTables(db)">
+            <span class="content-wrapper" @dblclick="toggleShowTables(db)">
               <span class="db-icon inline-center"><icon-svg type="database" /></span>
               <span class="content-title" :title="db['database_name']" v-html="db['database_name']" />
             </span>
@@ -27,7 +27,27 @@
       </vue-scroll>
     </div>
     <div class="coder-config-container">
-      <div @click="testConnect">测试数据库连接</div>
+      <form class="form w-720">
+        <div class="form-item row">
+          <div class="form-item-label col-4"><label>表名</label></div>
+          <div class="form-item-control-wrapper col-14">
+            <input v-model="config.table" type="text" class="form-item-control input" readonly>
+          </div>
+        </div>
+        <div class="form-item row">
+          <div class="form-item-label col-4"><label>包名</label></div>
+          <div class="form-item-control-wrapper col-14">
+            <input v-model="config.package" type="text" class="form-item-control input">
+          </div>
+        </div>
+        <div class="form-item row">
+          <div class="form-item-label col-4"><label>生成位置</label></div>
+          <div class="form-item-control-wrapper col-14">
+            <input v-model="config.output" type="text" class="form-item-control input">
+          </div>
+          <button class="btn btn-primary" type="button" @click="handleChoosePath()">选择位置</button>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -36,6 +56,8 @@
 import VueScroll from 'vuescroll'
 import IconSvg from '@/components/IconSvg/index'
 
+import { CHOOSE_FOLDER } from '#/constant'
+import { msgHandler } from '@/utils/events'
 import { getTableList } from '@/api/database'
 
 export default {
@@ -46,7 +68,12 @@ export default {
   },
   data() {
     return {
-      databases: []
+      databases: [],
+      config: {
+        table: '',
+        package: '',
+        output: ''
+      }
     }
   },
   created() {
@@ -64,74 +91,11 @@ export default {
     toggleShowTables(db) {
       db['open'] = !db['open']
     },
-    getConfig() {
-
-    },
-    testConnect() {
+    handleChoosePath() {
+      msgHandler(CHOOSE_FOLDER).then(response => {
+        console.log(response)
+      })
     }
   }
 }
 </script>
-<style lang="less">
-.coder-app {
-  width: 100%;
-  height: 100%;
-  display: flex;
-
-  .database-container {
-    width: 25%;
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid #e8e8e8;
-
-    .header {
-      height: 50px;
-      line-height: 50px;
-    }
-
-    .database-list {
-      margin: 0;
-      padding: 0 5px;
-
-      li {
-        margin: 0;
-        padding: 5px 0;
-
-        .switcher {
-          width: 24px;
-          height: 24px;
-          font-size: 12px;
-          color: #000000;
-          vertical-align: top;
-        }
-
-        .content-wrapper {
-          height: 24px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-
-          .db-icon, .table-icon {
-            width: 24px;
-            height: 24px;
-          }
-
-          .content-title {
-
-          }
-        }
-
-        .table-list {
-          & > li:first-child {
-            padding-top: 10px;
-          }
-        }
-      }
-    }
-  }
-
-  .coder-config-container {
-    width: 75%;
-  }
-}
-</style>

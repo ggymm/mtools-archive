@@ -1,0 +1,21 @@
+.row {
+  display: flex;
+  flex-flow: row wrap;
+
+  .col {
+    position: relative;
+    max-width: 100%;
+    min-height: 1px;
+  }
+
+  @len: 24;
+  .Loop(@index) when (@index<@len) {
+    .col-@{index} {
+      display: block;
+      flex: 0 0 @index / @len * 100%;
+      max-width: @index / @len * 100%;
+    }
+    .Loop(@index+1);
+  }
+  .Loop(0);
+}
