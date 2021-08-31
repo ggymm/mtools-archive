@@ -33,11 +33,9 @@
 <script>
 import '@/assets/iconfont.js'
 import { $, on } from '@/utils/dom'
-import { requireFunc } from '@/utils/require'
+import { msgSender } from '@/utils/events'
+import { apps } from '#/constant'
 import IconSvg from '@/components/IconSvg/index'
-
-const { ipcRenderer } = requireFunc('electron')
-// const ipcRenderer = {}
 
 const menus = [
   { key: 'setting', icon: 'setting', title: '设置' },
@@ -45,53 +43,6 @@ const menus = [
   { key: 'hide', icon: 'hide', title: '隐藏' },
   { key: 'exit', icon: 'exit', title: '退出' }
 ]
-const apps = {
-  coder: {
-    icon: 'coder',
-    title: '代码生成器',
-    window: {
-      width: 1000,
-      height: 750,
-      frame: true
-    }
-  },
-  magnet: {
-    icon: 'magnet',
-    title: '磁力链接搜索',
-    window: {
-      width: 800,
-      height: 600,
-      frame: true
-    }
-  },
-  json: {
-    icon: 'coder',
-    title: 'JSON工具集',
-    window: {
-      width: 800,
-      height: 600,
-      frame: true
-    }
-  },
-  android: {
-    icon: 'android',
-    title: 'Android工具集',
-    window: {
-      width: 800,
-      height: 600,
-      frame: true
-    }
-  },
-  video: {
-    icon: 'video',
-    title: '音视频工具箱',
-    window: {
-      width: 800,
-      height: 600,
-      frame: true
-    }
-  }
-}
 
 export default {
   name: 'Index',
@@ -114,13 +65,12 @@ export default {
   methods: {
     handleMenu(key) {
       if (key !== 'setting') {
-        ipcRenderer.send(`mtools:${key}`)
+        msgSender(`mtools:${key}`)
       }
     },
     handleOpenApp(key) {
       const { title, window } = apps[key]
-
-      ipcRenderer.send(`mtools:open-app`, {
+      msgSender(`mtools:open-app`, {
         title: title,
         path: key, frame: window.frame,
         width: window.width, height: window.height

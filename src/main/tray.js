@@ -1,7 +1,19 @@
 import { Menu, Tray } from 'electron'
 import { is } from 'electron-util'
 
+import createAppWindow from './app'
+import { apps } from '#/constant'
+
 const { join } = require('path')
+
+async function openApp(key) {
+  const { title, window } = apps[key]
+  await createAppWindow({
+    title: title,
+    path: key, frame: window.frame,
+    width: window.width, height: window.height
+  })
+}
 
 export default function createTray(window) {
   let iconPath
@@ -23,6 +35,12 @@ export default function createTray(window) {
       label: '显示窗口',
       click() {
         window.show()
+      }
+    },
+    {
+      label: '代码生成器',
+      async click() {
+        await openApp('coder')
       }
     },
     {

@@ -4,11 +4,10 @@ import { app, protocol, dialog, ipcMain, BrowserWindow } from 'electron'
 import { is } from 'electron-util'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import registerApis from './events'
+import createAppWindow from './app'
 import createTray from './tray'
 
 let mainWindow
-const appWindows = new Set()
-const appWindowTitles = new Set()
 
 const isSingleInstance = app.requestSingleInstanceLock()
 if (!isSingleInstance) {
@@ -94,55 +93,6 @@ async function createWindow() {
   ipcMain.on('mtools:close', (event) => {
     BrowserWindow.fromWebContents(event.sender).destroy()
   })
-}
-
-async function createAppWindow(args) {
-  if (appWindowTitles.has(args.title)) {
-    appWindows.forEach((window) => {
-      if (window.webContents.getTitle() === args.title) {
-        if (window.isMinimized()) {
-          window.restore()
-        }
-        window.focus()
-      }
-    })
-  } else {
-    let appWindow = new BrowserWindow({
-      show: true,
-      width: args.width,
-      height: args.height,
-      minWidth: args.width,
-      minHeight: args.height,
-      title: args.title,
-      frame: args.frame,
-      webPreferences: {
-        webSecurity: false,
-        nodeIntegration: true,
-        contextIsolation: false
-      }
-    })
-
-    if (args.frame) {
-      appWindow.setMenu(null)
-    }
-
-    if (is.development) {
-      await appWindow.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}#/${args.path}`)
-      appWindow.webContents.openDevTools({ mode: 'bottom' })
-    } else {
-      createProtocol('app')
-      await appWindow.loadURL(`app://./index.html#/${args.path}`)
-    }
-
-    appWindow.on('closed', () => {
-      appWindow = null
-      appWindows.delete(appWindows)
-      appWindowTitles.delete(args.title)
-    })
-
-    appWindows.add(appWindow)
-    appWindowTitles.add(args.title)
-  }
 }
 
 const readyFunction = async() => {
