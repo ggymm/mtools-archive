@@ -1,94 +1,74 @@
 <template>
   <div class="coder-app no-drag">
-    <div class="database-container">
-      <div class="header">
-        <el-input v-model="query.name" size="small" />
-      </div>
-      <vue-scroll :ops="{ bar: { background: '#c1c1c1', size: '8px' } }">
-        <ul class="database-list">
-          <li v-for="(db, i) in databases" :key="i">
-            <span class="switcher inline-center" @click="toggleShowTables(db)">
-              <icon-svg :type="db.open ? 'caret-down' : 'caret-right'" />
-            </span>
-            <span class="content-wrapper" @click="toggleShowTables(db)" @dblclick="toggleShowTables(db)">
-              <span class="db-icon inline-center"><icon-svg type="database" /></span>
-              <span class="content-title" :title="db['databaseId']" v-html="db['databaseId']" />
-            </span>
-            <ul v-if="db.open" class="table-list">
-              <li v-for="(table, j) in db['tables']" :key="j">
-                <span class="content-wrapper" @click="handleSelectTable(db, table)">
-                  <input v-model="table['checked']" type="checkbox" class="checkbox">
-                  <span class="table-icon inline-center"><icon-svg type="table" /></span>
-                  <span class="title" :title="table['tableName']" v-html="table['tableName']" />
-                </span>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </vue-scroll>
-    </div>
-    <div class="coder-config-container">
-      <el-form ref="config" :model="config" size="medium" label-width="120px">
-        <el-form-item label="数据库">
-          <el-select v-model="config.databaseId" placeholder="请选择">
-            <el-option
-              v-for="item in databases"
-              :key="item['databaseId']"
-              :label="item['databaseId']"
-              :value="item['databaseId']"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="数据表">
-          <el-select v-model="config.tables" multiple placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="包名">
-          <el-input v-model="config.package" />
-        </el-form-item>
-        <el-form-item label="生成位置">
-          <el-input v-model="config.package" />
-          <el-button type="primary" @click="handleChoosePath()">选择文件夹</el-button>
-        </el-form-item>
-        <el-form-item label="其他配置">
-          <div class="options-grid">
-            <div>
-              <el-checkbox v-model="config.cover">覆盖已存在文件</el-checkbox>
-            </div>
-            <div>
-              <el-checkbox v-model="config.useParent">使用父类</el-checkbox>
-            </div>
-            <div>
-              <el-checkbox v-model="config.genFrontEnd">生成前端代码</el-checkbox>
-              <el-checkbox v-model="config.useCommentAsLabel">使用字段注释做前端标签值</el-checkbox>
-            </div>
+    <el-form ref="config" :model="config" size="medium" label-width="200px">
+      <el-form-item label="数据库">
+        <el-select v-model="config.databaseId" @change="handleDBChange">
+          <el-option
+            v-for="item in databases"
+            :key="item['databaseId']"
+            :label="item['databaseId']"
+            :value="item['databaseId']"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="数据表">
+        <el-select v-model="config.tables" filterable multiple>
+          <el-option
+            v-for="table in tables"
+            :key="table['tableName']"
+            :label="table['tableName']"
+            :value="table['tableName']"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="生成配置">
+        <div class="options">
+          <div>
+            <el-checkbox v-model="config.outputCover">覆盖存在文件</el-checkbox>
           </div>
-        </el-form-item>
-      </el-form>
-    </div>
+          <div>
+            <el-checkbox v-model="config.useLombok" disabled>使用Lombok</el-checkbox>
+            <el-checkbox v-model="config.useParent">使用父类</el-checkbox>
+            <el-checkbox v-model="config.autoFill">添加插入/更新自动填充注解</el-checkbox>
+          </div>
+          <div>
+            <el-checkbox v-model="config.useOriginColumn">使用原始列名</el-checkbox>
+          </div>
+          <div>
+            <el-checkbox v-model="config.autoClassComment">自动生成类注释</el-checkbox>
+          </div>
+          <div>
+            <el-checkbox v-model="config.genFrontEnd">生成前端代码</el-checkbox>
+            <el-checkbox v-model="config.useCommentAsLabel">使用字段注释做前端标签值</el-checkbox>
+          </div>
+        </div>
+      </el-form-item>
+      <el-form-item label="包名">
+        <el-input v-model="config.package" spellcheck="false" />
+      </el-form-item>
+      <el-form-item v-if="config.useParent" label="父类完整包名">
+        <el-input v-model="config.parentPackage" spellcheck="false" />
+      </el-form-item>
+      <el-form-item label="生成位置">
+        <el-input v-model="config.output" spellcheck="false" />
+        <el-button type="primary" @click="handleChoosePath()">选择文件夹</el-button>
+      </el-form-item>
+      <el-form-item class="handler">
+        <el-button type="primary">代码生成</el-button>
+        <el-button type="success">打开生成文件夹</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
 <script>
-import VueScroll from 'vuescroll'
-import IconSvg from '@/components/IconSvg/index'
-
 import { CHOOSE_FOLDER } from '#/constant'
 import { msgHandler } from '@/utils/events'
-import { getTableList } from '@/api/database'
+import { getDBList, getTableList } from '@/api/database'
 
 export default {
   name: 'Index',
-  components: {
-    VueScroll,
-    IconSvg
-  },
+  components: {},
   data() {
     return {
       databases: [],
@@ -100,28 +80,41 @@ export default {
         databaseId: null,
         tables: [],
         package: null,
+        parentPackage: 'com.ninelock.core.base.BaseEntity',
         output: null,
-        cover: false,
-        useParent: true,
+        outputCover: true,
+        useLombok: true,
+        useParent: false,
+        autoFill: true,
+        useOriginColumn: false,
+        autoClassComment: true,
         genFrontEnd: false,
         useCommentAsLabel: false
       }
     }
   },
   created() {
-    this.getTableList()
+    this.getDBList()
   },
   methods: {
-    getTableList() {
-      getTableList().then(response => {
+    getDBList() {
+      getDBList().then(response => {
         const { success, data } = response
         if (success) {
           this.databases = data
         }
       })
     },
-    toggleShowTables(db) {
-      db['open'] = !db['open']
+    handleDBChange(val) {
+      const params = {
+        databaseId: val
+      }
+      getTableList(params).then(response => {
+        const { success, data } = response
+        if (success) {
+          this.tables = data
+        }
+      })
     },
     handleSelectTable(db, table) {
       const { databaseId } = db
@@ -148,8 +141,9 @@ export default {
       }
     },
     handleChoosePath() {
-      msgHandler(CHOOSE_FOLDER).then(response => {
-        this.config.output = response
+      const _this = this
+      msgHandler(CHOOSE_FOLDER).then((response) => {
+        _this.config.output = response
       })
     }
   }

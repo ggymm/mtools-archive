@@ -16,3 +16,7 @@ export function msgHandler(method, args) {
     ipcRenderer.send(method, callbackId, args)
   })
 }
+
+export function msgSender(method, args) {
+  ipcRenderer.send(method, args)
+}
