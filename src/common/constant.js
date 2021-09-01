@@ -7,12 +7,12 @@ export const apps = {
   magnet: {
     icon: 'magnet',
     title: '磁力链接搜索',
-    window: { width: 800, height: 600, frame: true }
+    window: { width: 1200, height: 600, frame: true }
   },
   json: {
     icon: 'coder',
     title: 'JSON工具集',
-    window: { width: 800, height: 600, frame: true }
+    window: { width: 1200, height: 900, frame: true }
   },
   android: {
     icon: 'android',
