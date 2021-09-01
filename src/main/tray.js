@@ -44,6 +44,12 @@ export default function createTray(window) {
       }
     },
     {
+      label: 'JSON工具集',
+      async click() {
+        await openApp('json')
+      }
+    },
+    {
       label: '帮助文档',
       click: () => {
         process.nextTick(() => {
