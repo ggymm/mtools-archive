@@ -13,7 +13,7 @@ const routes = [
   {
     path: '/coder',
     name: 'Coder',
-    component: () => import('@/views/coder/coder.vue')
+    component: () => import('@/views/coder/index.vue')
   },
   {
     path: '/json',

@@ -1,5 +1,5 @@
 <template>
-  <div class="coder-app no-drag">
+  <div class="coder-app">
     <el-form ref="config" :model="config" size="medium" label-width="200px">
       <el-form-item label="数据库">
         <el-select v-model="config.databaseId" @change="handleDBChange">
