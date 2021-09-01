@@ -19,18 +19,14 @@
         {{ editorViewVisible ? "隐藏" : "显示" }}右侧树视图
       </el-button>
     </div>
-    <el-row :gutter="10" class="json-editor">
-      <el-col :span="12">
-        <div v-show="editorCodeVisible" class="json-code">
-          <div ref="jsoneditorCode" class="jsoneditor-container" />
-        </div>
-      </el-col>
-      <el-col :span="12">
-        <div v-show="editorViewVisible" class="json-view">
-          <div ref="jsoneditorView" class="jsoneditor-container" />
-        </div>
-      </el-col>
-    </el-row>
+    <div class="json-editor">
+      <div v-show="editorCodeVisible" class="json-code">
+        <div ref="jsoneditorCode" class="jsoneditor-container" />
+      </div>
+      <div v-show="editorViewVisible" class="json-view">
+        <div ref="jsoneditorView" class="jsoneditor-container" />
+      </div>
+    </div>
   </div>
 </template>
 
