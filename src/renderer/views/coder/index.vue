@@ -32,7 +32,8 @@
             <el-checkbox v-model="config.autoFill">添加插入/更新自动填充注解</el-checkbox>
           </div>
           <div>
-            <el-checkbox v-model="config.useOriginColumn">使用原始列名</el-checkbox>
+            <el-checkbox v-model="config.useOriginColumn">使用原始表名做包名</el-checkbox>
+            <el-checkbox v-model="config.useOriginColumn">使用原始列名做字段</el-checkbox>
           </div>
           <div>
             <el-checkbox v-model="config.autoClassComment">自动生成类注释</el-checkbox>
@@ -86,6 +87,7 @@ export default {
         useLombok: true,
         useParent: false,
         autoFill: true,
+        useOriginTable: false,
         useOriginColumn: false,
         autoClassComment: true,
         genFrontEnd: false,
