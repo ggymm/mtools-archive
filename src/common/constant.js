@@ -4,14 +4,14 @@ export const apps = {
     title: '代码生成器',
     window: { width: 1000, height: 750, frame: true }
   },
-  magnet: {
-    icon: 'magnet',
-    title: '磁力链接搜索',
-    window: { width: 1200, height: 600, frame: true }
-  },
   json: {
-    icon: 'coder',
+    icon: 'json',
     title: 'JSON工具集',
+    window: { width: 1200, height: 900, frame: true }
+  },
+  postman: {
+    icon: 'postman',
+    title: '接口调试工具',
     window: { width: 1200, height: 900, frame: true }
   },
   android: {
@@ -23,6 +23,11 @@ export const apps = {
     icon: 'video',
     title: '音视频工具箱',
     window: { width: 800, height: 600, frame: true }
+  },
+  magnet: {
+    icon: 'magnet',
+    title: '磁力链接搜索',
+    window: { width: 1200, height: 600, frame: true }
   }
 }
 
