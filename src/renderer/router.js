@@ -21,6 +21,11 @@ const routes = [
     component: () => import('@/views/json/index.vue')
   },
   {
+    path: '/postman',
+    name: 'Postman',
+    component: () => import('@/views/postman/index.vue')
+  },
+  {
     path: '/magnet',
     name: 'Magnet',
     component: () => import('@/views/magnet/index.vue')
