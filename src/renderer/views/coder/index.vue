@@ -5,9 +5,9 @@
         <el-select v-model="config.databaseId" @change="handleDBChange">
           <el-option
             v-for="item in databases"
-            :key="item['databaseId']"
-            :label="item['databaseId']"
-            :value="item['databaseId']"
+            :key="item['id']"
+            :label="item['showName']"
+            :value="item['id']"
           />
         </el-select>
       </el-form-item>
