@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import '@/assets/iconfont.js'
 import { $, on } from '@/utils/dom'
 import { msgSender } from '@/utils/events'
 import { apps } from '#/constant'
