@@ -20,8 +20,8 @@ export default async function createAppWindow(args) {
       show: true,
       width: args.width,
       height: args.height,
-      minWidth: args.width,
-      minHeight: args.height,
+      minWidth: args.minWidth || args.width,
+      minHeight: args.minHeight || args.height,
       title: args.title,
       frame: args.frame,
       webPreferences: {
