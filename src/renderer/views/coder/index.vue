@@ -50,12 +50,16 @@
       <el-form-item v-if="config.useParent" label="父类完整包名">
         <el-input v-model="config.parentPackage" spellcheck="false" />
       </el-form-item>
+      <el-form-item v-if="config.autoFill" label="自动填充字段">
+        <el-input v-model="config.autoFillColumn" spellcheck="false" />
+      </el-form-item>
       <el-form-item label="生成位置">
         <el-input v-model="config.output" spellcheck="false" />
         <el-button type="primary" @click="handleChoosePath()">选择文件夹</el-button>
       </el-form-item>
       <el-form-item class="handler">
-        <el-button type="primary">代码生成</el-button>
+        <el-button type="primary">生成代码</el-button>
+        <el-button type="primary">保存设置</el-button>
         <el-button type="success">打开生成文件夹</el-button>
       </el-form-item>
     </el-form>
@@ -87,6 +91,7 @@ export default {
         useLombok: true,
         useParent: false,
         autoFill: true,
+        autoFillColumn: 'create_time,create_id,creator,update_time,update_id,del_flag',
         useOriginTable: false,
         useOriginColumn: false,
         autoClassComment: true,
