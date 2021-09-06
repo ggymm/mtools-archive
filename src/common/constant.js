@@ -12,7 +12,7 @@ export const apps = {
   postman: {
     icon: 'postman',
     title: '接口调试工具',
-    window: { width: 1200, height: 900, frame: true }
+    window: { width: 1200, height: 900, minWidth: 1200, minHeight: 600, frame: true }
   },
   android: {
     icon: 'android',
