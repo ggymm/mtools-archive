@@ -5,6 +5,10 @@
 </template>
 <script>
 import '@/assets/iconfont.js'
+import '@/assets/iconpark.js'
+export default {
+  name: 'App'
+}
 </script>
 <style lang="less">
 @import "styles/index.less";
