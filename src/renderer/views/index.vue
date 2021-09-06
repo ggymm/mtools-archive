@@ -73,7 +73,8 @@ export default {
       msgSender(`mtools:open-app`, {
         title: title,
         path: key, frame: window.frame,
-        width: window.width, height: window.height
+        width: window.width, height: window.height,
+        minWidth: window.minWidth, minHeight: window.minHeight
       })
     }
   }
