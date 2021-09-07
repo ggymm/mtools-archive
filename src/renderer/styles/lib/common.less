@@ -1,7 +1,37 @@
-.w-720 {
-  width: 720px;
+.pane-group {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  min-width: 0;
+
+  &.vertical {
+    flex-direction: column;
+  }
+
+  &.horizontal {
+    flex-direction: row;
+  }
+
+  .pane-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
-.w-640 {
-  width: 640px;
+.pane, .pane-content {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+}
+
+.pane {
+  flex-direction: column;
+  flex: 1 auto;
+  position: relative;
+}
+
+.pane-content {
+  flex: 1;
+  flex-direction: column;
 }
