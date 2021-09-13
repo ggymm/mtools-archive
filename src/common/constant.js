@@ -1,8 +1,11 @@
+export const CHOOSE_FILE = 'mtools:choose-file-dialog'
+export const CHOOSE_FOLDER = 'mtools:choose-folder-dialog'
+
 export const apps = {
   coder: {
     icon: 'coder',
     title: '代码生成器',
-    window: { width: 1000, height: 750, frame: true }
+    window: { width: 1000, height: 840, frame: true }
   },
   json: {
     icon: 'json',
@@ -12,7 +15,8 @@ export const apps = {
   postman: {
     icon: 'postman',
     title: '接口调试工具',
-    window: { width: 1200, height: 900, minWidth: 1200, minHeight: 600, frame: true }
+    window: { width: 1200, height: 900, minWidth: 1200, minHeight: 600, frame: true },
+    windowMenu: {}
   },
   android: {
     icon: 'android',
@@ -30,6 +34,3 @@ export const apps = {
     window: { width: 1200, height: 600, frame: true }
   }
 }
-
-export const CHOOSE_FILE = 'mtools:choose-file-dialog'
-export const CHOOSE_FOLDER = 'mtools:choose-folder-dialog'

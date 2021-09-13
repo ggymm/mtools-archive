@@ -20,6 +20,7 @@
             :value="table['tableName']"
           />
         </el-select>
+        <el-button type="primary" @click="handleSelectAllTable(config.tables.length === 0)">{{ config.tables.length === 0 ? '全选' : '清空' }}</el-button>
       </el-form-item>
       <el-form-item label="生成配置">
         <div class="options">
@@ -28,14 +29,24 @@
           </div>
           <div>
             <el-checkbox v-model="config.useLombok" disabled>使用Lombok</el-checkbox>
-            <el-checkbox v-model="config.useParent">使用父类</el-checkbox>
-            <el-checkbox v-model="config.autoFill">添加插入/更新自动填充注解</el-checkbox>
+            <el-tooltip placement="top">
+              <div slot="content">实体类继承父类，则自动插入填充功能应该写在父类中，所以禁用自动填充配置</div>
+              <el-checkbox v-model="config.useParent">实体类继承父类</el-checkbox>
+            </el-tooltip>
+            <el-checkbox v-model="config.autoFill" :disabled="config.useParent">添加插入/更新自动填充注解</el-checkbox>
           </div>
           <div>
-            <el-checkbox v-model="config.useOriginColumn">使用原始表名做包名</el-checkbox>
-            <el-checkbox v-model="config.useOriginColumn">使用原始列名做字段</el-checkbox>
+            <el-tooltip placement="top">
+              <div slot="content">如果不使用，则包名使用小驼峰，文件名使用大驼峰</div>
+              <el-checkbox v-model="config.useOriginTable">使用原始表名做包名和文件名</el-checkbox>
+            </el-tooltip>
+            <el-tooltip placement="top">
+              <div slot="content">如果不使用，则使用小驼峰做字段名称</div>
+              <el-checkbox v-model="config.useOriginColumn">使用原始表列名做字段名称</el-checkbox>
+            </el-tooltip>
           </div>
           <div>
+            <el-checkbox v-model="config.formatDateColumn">格式化时间格式字段</el-checkbox>
             <el-checkbox v-model="config.autoClassComment">自动生成类注释</el-checkbox>
           </div>
           <div>
@@ -50,6 +61,9 @@
       <el-form-item v-if="config.useParent" label="父类完整包名">
         <el-input v-model="config.parentPackage" spellcheck="false" />
       </el-form-item>
+      <el-form-item v-if="config.useParent" label="实体类排除字段">
+        <el-input v-model="config.excludeColumn" spellcheck="false" />
+      </el-form-item>
       <el-form-item v-if="config.autoFill" label="自动填充字段">
         <el-input v-model="config.autoFillColumn" spellcheck="false" />
       </el-form-item>
@@ -58,7 +72,7 @@
         <el-button type="primary" @click="handleChoosePath()">选择文件夹</el-button>
       </el-form-item>
       <el-form-item class="handler">
-        <el-button type="primary">生成代码</el-button>
+        <el-button type="primary" @click="handleGenCode">生成代码</el-button>
         <el-button type="primary">保存设置</el-button>
         <el-button type="success">打开生成文件夹</el-button>
       </el-form-item>
@@ -70,10 +84,10 @@
 import { CHOOSE_FOLDER } from '#/constant'
 import { msgHandler } from '@/utils/events'
 import { getDBList, getTableList } from '@/api/database'
+import { genCode } from '@/api/coder'
 
 export default {
   name: 'Index',
-  components: {},
   data() {
     return {
       databases: [],
@@ -84,19 +98,35 @@ export default {
       config: {
         databaseId: null,
         tables: [],
-        package: null,
+        package: 'com.ninelock.api',
         parentPackage: 'com.ninelock.core.base.BaseEntity',
-        output: null,
+        output: 'D:/Temp/mtools/',
         outputCover: true,
         useLombok: true,
         useParent: false,
+        excludeColumn: 'create_time,create_id,creator,update_time,update_id,del_flag',
         autoFill: true,
         autoFillColumn: 'create_time,create_id,creator,update_time,update_id,del_flag',
         useOriginTable: false,
         useOriginColumn: false,
+        formatDateColumn: true,
         autoClassComment: true,
         genFrontEnd: false,
         useCommentAsLabel: false
+      }
+    }
+  },
+  computed: {
+    useParent: {
+      get() {
+        return this.config.useParent
+      }
+    }
+  },
+  watch: {
+    useParent: function(val) {
+      if (val) {
+        this.config.autoFill = false
       }
     }
   },
@@ -104,54 +134,37 @@ export default {
     this.getDBList()
   },
   methods: {
-    getDBList() {
-      getDBList().then(response => {
-        const { success, data } = response
-        if (success) {
-          this.databases = data
-        }
-      })
+    async getDBList() {
+      const { success, data } = await getDBList()
+      if (success) {
+        this.databases = data
+      }
     },
-    handleDBChange(val) {
+    async handleDBChange(val) {
       const params = {
         databaseId: val
       }
-      getTableList(params).then(response => {
-        const { success, data } = response
-        if (success) {
-          this.tables = data
-        }
-      })
-    },
-    handleSelectTable(db, table) {
-      const { databaseId } = db
-      if (this.config.databaseId !== databaseId) {
-        this.tables = []
-        for (let i = 0, len = this.databases.length; i < len; i++) {
-          if (this.databases[i].tables === null) {
-            continue
-          }
-          for (let j = 0; j < this.databases[i].tables.length; j++) {
-            this.databases[i].tables[j].checked = false
-          }
-        }
-        this.config.databaseId = databaseId
+      const { success, data } = await getTableList(params)
+      if (success) {
+        this.tables = data
       }
-      const { tableName } = table
-      const index = this.tables.indexOf(tableName)
-      if (index < 0) {
-        table.checked = true
-        this.tables.push(tableName)
+    },
+    handleSelectAllTable(flag) {
+      if (flag) {
+        this.config.tables = []
+        for (let i = 0, len = this.tables.length; i < len; i++) {
+          this.config.tables.push(this.tables[i]['tableName'])
+        }
       } else {
-        table.checked = false
-        this.tables.splice(index, 1)
+        this.config.tables = []
       }
     },
-    handleChoosePath() {
-      const _this = this
-      msgHandler(CHOOSE_FOLDER).then((response) => {
-        _this.config.output = response
-      })
+    async handleChoosePath() {
+      this.config.output = await msgHandler(CHOOSE_FOLDER)
+    },
+    async handleGenCode() {
+      const resp = await genCode(this.config)
+      console.log(resp)
     }
   }
 }
