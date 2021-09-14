@@ -3,6 +3,11 @@
     <el-tabs>
       <el-tab-pane label="Java代码生成">
         <el-form ref="javaConfig" :model="javaConfig" size="medium" label-width="200px">
+          <el-form-item class="handler">
+            <el-button type="primary" :loading="generateJavaLoading" @click="handleGenJavaCode">生成代码</el-button>
+            <el-button type="primary">保存设置</el-button>
+            <el-button type="success">打开生成文件夹</el-button>
+          </el-form-item>
           <el-form-item label="数据库">
             <el-select v-model="javaConfig.databaseId" @change="handleDBChange($event, 'java')">
               <el-option
@@ -12,7 +17,7 @@
                 :value="item['id']"
               />
             </el-select>
-            <el-button type="primary" @click="getDBList()">刷新</el-button>
+            <el-button type="primary" @click="getDBList()">刷新数据库</el-button>
           </el-form-item>
           <el-form-item label="数据表">
             <el-select v-model="javaConfig.tables" filterable multiple>
@@ -24,8 +29,12 @@
               />
             </el-select>
             <el-button type="primary" @click="handleSelectAllTable('java',javaConfig, javaConfig.tables.length === 0)">
-              {{ javaConfig.tables.length === 0 ? '全选' : '清空' }}
+              {{ javaConfig.tables.length === 0 ? '选择全部表' : '清空所选表' }}
             </el-button>
+          </el-form-item>
+          <el-form-item label="生成位置">
+            <el-input v-model="javaConfig.output" spellcheck="false" />
+            <el-button type="primary" @click="handleChoosePath(javaConfig)">选择文件夹</el-button>
           </el-form-item>
           <el-form-item label="生成配置">
             <div class="options">
@@ -73,28 +82,24 @@
             </div>
             <el-input v-model="javaConfig.package" spellcheck="false" />
           </el-form-item>
-          <el-form-item v-if="javaConfig.useParent" label="父类完整包名">
-            <el-input v-model="javaConfig.parentPackage" spellcheck="false" />
+          <el-form-item label="父类完整包名">
+            <el-input v-model="javaConfig.parentPackage" :disabled="!javaConfig.useParent" spellcheck="false" />
           </el-form-item>
-          <el-form-item v-if="javaConfig.useParent" label="实体类排除字段">
-            <el-input v-model="javaConfig.excludeColumn" spellcheck="false" />
+          <el-form-item label="实体类排除字段">
+            <el-input v-model="javaConfig.excludeColumn" :disabled="!javaConfig.useParent" spellcheck="false" />
           </el-form-item>
-          <el-form-item v-if="javaConfig.autoFill" label="自动填充字段">
-            <el-input v-model="javaConfig.autoFillColumn" spellcheck="false" />
-          </el-form-item>
-          <el-form-item label="生成位置">
-            <el-input v-model="javaConfig.output" spellcheck="false" />
-            <el-button type="primary" @click="handleChoosePath(javaConfig)">选择文件夹</el-button>
-          </el-form-item>
-          <el-form-item class="handler">
-            <el-button type="primary" :loading="generateJavaLoading" @click="handleGenJavaCode">生成代码</el-button>
-            <el-button type="primary">保存设置</el-button>
-            <el-button type="success">打开生成文件夹</el-button>
+          <el-form-item label="自动填充字段">
+            <el-input v-model="javaConfig.autoFillColumn" :disabled="!javaConfig.autoFill" spellcheck="false" />
           </el-form-item>
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="Go代码生成">
         <el-form ref="goConfig" :model="goConfig" size="medium" label-width="200px">
+          <el-form-item class="handler">
+            <el-button type="primary" :loading="generateGoLoading" @click="handleGenGoCode">生成代码</el-button>
+            <el-button type="primary">保存设置</el-button>
+            <el-button type="success">打开生成文件夹</el-button>
+          </el-form-item>
           <el-form-item label="数据库">
             <el-select v-model="goConfig.databaseId" @change="handleDBChange($event, 'go')">
               <el-option
@@ -104,7 +109,7 @@
                 :value="item['id']"
               />
             </el-select>
-            <el-button type="primary" @click="getDBList()">刷新</el-button>
+            <el-button type="primary" @click="getDBList()">刷新数据库</el-button>
           </el-form-item>
           <el-form-item label="数据表">
             <el-select v-model="goConfig.tables" filterable multiple>
@@ -116,17 +121,12 @@
               />
             </el-select>
             <el-button type="primary" @click="handleSelectAllTable('go',goConfig,goConfig.tables.length === 0)">
-              {{ goConfig.tables.length === 0 ? '全选' : '清空' }}
+              {{ goConfig.tables.length === 0 ? '选择全部表' : '清空所选表' }}
             </el-button>
           </el-form-item>
           <el-form-item label="生成位置">
             <el-input v-model="goConfig.output" spellcheck="false" />
             <el-button type="primary" @click="handleChoosePath(goConfig)">选择文件夹</el-button>
-          </el-form-item>
-          <el-form-item class="handler">
-            <el-button type="primary" :loading="generateGoLoading" @click="handleGenGoCode">生成代码</el-button>
-            <el-button type="primary">保存设置</el-button>
-            <el-button type="success">打开生成文件夹</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
