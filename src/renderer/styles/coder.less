@@ -1,37 +1,42 @@
 .coder-app {
-  flex: 1;
+  width: 100%;
+  height: 100%;
   display: flex;
-  padding: 10px 120px 20px 20px;
 
-  .el-form {
+  .el-tabs {
     flex: 1;
+    padding: 10px 120px 20px 20px;
 
-    .el-form-item__content {
-      display: flex;
+    .el-form {
+      flex: 1;
 
-      .el-select {
-        width: 480px;
+      .el-form-item__content {
+        display: flex;
 
-        .el-select__tags {
-          max-height: 120px;
-          overflow: auto;
+        .el-select {
+          width: 480px;
+
+          .el-select__tags {
+            max-height: 120px;
+            overflow: auto;
+          }
+        }
+
+        .el-button {
+          margin-left: 16px;
         }
       }
 
-      .el-button {
-        margin-left: 16px;
+      .options {
+        div {
+          margin-bottom: 10px;
+        }
       }
-    }
 
-    .options {
-      div {
-        margin-bottom: 10px;
-      }
-    }
-
-    .handler {
-      .el-button:first-child {
-        margin: 0;
+      .handler {
+        .el-button:first-child {
+          margin: 0;
+        }
       }
     }
   }
