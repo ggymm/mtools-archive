@@ -5,7 +5,7 @@ export const apps = {
   coder: {
     icon: 'coder',
     title: '代码生成器',
-    window: { width: 1000, height: 840, frame: true }
+    window: { width: 1000, height: 880, frame: true }
   },
   json: {
     icon: 'json',
