@@ -10,6 +10,7 @@
             :value="item['id']"
           />
         </el-select>
+        <el-button type="primary" @click="getDBList()">刷新</el-button>
       </el-form-item>
       <el-form-item label="数据表">
         <el-select v-model="config.tables" filterable multiple>
@@ -37,17 +38,20 @@
           </div>
           <div>
             <el-tooltip placement="top">
+              <div slot="content">包含用户名称和生成时间</div>
+              <el-checkbox v-model="config.autoClassComment" disabled>自动生成类注释</el-checkbox>
+            </el-tooltip>
+            <el-checkbox v-model="config.formatDateColumn">格式化时间格式字段</el-checkbox>
+          </div>
+          <div>
+            <el-tooltip placement="top">
               <div slot="content">如果不使用，则包名使用小驼峰，文件名使用大驼峰</div>
-              <el-checkbox v-model="config.useOriginTable">使用原始表名做包名和文件名</el-checkbox>
+              <el-checkbox v-model="config.useOriginTable" @change="handleCheckedAlert($event,'useOriginTable')">使用原始表名做包名和文件名</el-checkbox>
             </el-tooltip>
             <el-tooltip placement="top">
               <div slot="content">如果不使用，则使用小驼峰做字段名称</div>
-              <el-checkbox v-model="config.useOriginColumn">使用原始表列名做字段名称</el-checkbox>
+              <el-checkbox v-model="config.useOriginColumn" @change="handleCheckedAlert($event,'useOriginColumn')">使用原始表列名做字段名称</el-checkbox>
             </el-tooltip>
-          </div>
-          <div>
-            <el-checkbox v-model="config.formatDateColumn">格式化时间格式字段</el-checkbox>
-            <el-checkbox v-model="config.autoClassComment">自动生成类注释</el-checkbox>
           </div>
           <div>
             <el-checkbox v-model="config.genFrontEnd">生成前端代码</el-checkbox>
@@ -55,7 +59,14 @@
           </div>
         </div>
       </el-form-item>
-      <el-form-item label="包名">
+      <el-form-item>
+        <div slot="label">
+          <label>包名</label>
+          <el-tooltip placement="top">
+            <div slot="content">不需要保留结尾的点(.)</div>
+            <i class="el-icon-question" />
+          </el-tooltip>
+        </div>
         <el-input v-model="config.package" spellcheck="false" />
       </el-form-item>
       <el-form-item v-if="config.useParent" label="父类完整包名">
@@ -158,6 +169,33 @@ export default {
       } else {
         this.config.tables = []
       }
+    },
+    handleCheckedAlert(value, type) {
+      if (value) {
+        switch (type) {
+          case 'useOriginTable':
+            this.$confirm('不建议使用原始表名，一般不符合Java规范', '提示', {
+              confirmButtonText: '仍然选中',
+              cancelButtonText: '取消选中',
+              type: 'warning'
+            }).then(() => {
+            }).catch(() => {
+              this.config['useOriginTable'] = false
+            })
+            break
+          case 'useOriginColumn':
+            this.$confirm('不建议使用原始字段名，一般不符合Java规范', '提示', {
+              confirmButtonText: '仍然选中',
+              cancelButtonText: '取消选中',
+              type: 'warning'
+            }).then(() => {
+            }).catch(() => {
+              this.config['useOriginColumn'] = false
+            })
+            break
+        }
+      }
+      console.log(value, type)
     },
     async handleChoosePath() {
       this.config.output = await msgHandler(CHOOSE_FOLDER)
