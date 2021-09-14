@@ -10,6 +10,3 @@ export default {
   name: 'App'
 }
 </script>
-<style lang="less">
-@import "styles/index.less";
-</style>
