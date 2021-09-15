@@ -2,12 +2,7 @@
   <div class="coder-app">
     <el-tabs>
       <el-tab-pane label="Java代码生成">
-        <el-form ref="javaConfig" :model="javaConfig" size="medium" label-width="200px">
-          <el-form-item class="handler">
-            <el-button type="primary" :loading="generateJavaLoading" @click="handleGenJavaCode">生成代码</el-button>
-            <el-button type="primary">保存设置</el-button>
-            <el-button type="success">打开生成文件夹</el-button>
-          </el-form-item>
+        <el-form ref="javaConfig" :model="javaConfig" size="medium" label-width="160px">
           <el-form-item label="数据库">
             <el-select v-model="javaConfig.databaseId" @change="handleDBChange($event, 'java')">
               <el-option
@@ -91,15 +86,15 @@
           <el-form-item label="自动填充字段">
             <el-input v-model="javaConfig.autoFillColumn" :disabled="!javaConfig.autoFill" spellcheck="false" />
           </el-form-item>
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="Go代码生成">
-        <el-form ref="goConfig" :model="goConfig" size="medium" label-width="200px">
           <el-form-item class="handler">
-            <el-button type="primary" :loading="generateGoLoading" @click="handleGenGoCode">生成代码</el-button>
+            <el-button type="primary" :loading="generateJavaLoading" @click="handleGenJavaCode">生成代码</el-button>
             <el-button type="primary">保存设置</el-button>
             <el-button type="success">打开生成文件夹</el-button>
           </el-form-item>
+        </el-form>
+      </el-tab-pane>
+      <el-tab-pane label="Go代码生成">
+        <el-form ref="goConfig" :model="goConfig" size="medium" label-width="160px">
           <el-form-item label="数据库">
             <el-select v-model="goConfig.databaseId" @change="handleDBChange($event, 'go')">
               <el-option
@@ -127,6 +122,11 @@
           <el-form-item label="生成位置">
             <el-input v-model="goConfig.output" spellcheck="false" />
             <el-button type="primary" @click="handleChoosePath(goConfig)">选择文件夹</el-button>
+          </el-form-item>
+          <el-form-item class="handler">
+            <el-button type="primary" :loading="generateGoLoading" @click="handleGenGoCode">生成代码</el-button>
+            <el-button type="primary">保存设置</el-button>
+            <el-button type="success">打开生成文件夹</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
