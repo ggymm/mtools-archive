@@ -35,6 +35,7 @@
             <div class="options">
               <div>
                 <el-checkbox v-model="javaConfig.outputCover">覆盖存在文件</el-checkbox>
+                <el-checkbox v-model="javaConfig.onlyEntity">只生成实体类</el-checkbox>
               </div>
               <div>
                 <el-checkbox v-model="javaConfig.useLombok" disabled>使用Lombok</el-checkbox>
@@ -154,6 +155,7 @@ export default {
         parentPackage: 'com.ninelock.core.base.BaseEntity',
         output: 'D:/Temp/mtools/',
         outputCover: true,
+        onlyEntity: false,
         useLombok: true,
         useParent: false,
         excludeColumn: 'create_time,create_id,creator,update_time,update_id,del_flag',
