@@ -25,11 +25,16 @@ export default async function createAppWindow(args) {
       title: args.title,
       frame: args.frame,
       webPreferences: {
+        webviewTag: true,
         webSecurity: false,
         nodeIntegration: true,
         contextIsolation: false
       }
     })
+
+    if (args.maximize) {
+      appWindow.maximize()
+    }
 
     if (args.frame) {
       appWindow.setMenu(null)
@@ -37,7 +42,7 @@ export default async function createAppWindow(args) {
 
     if (is.development) {
       await appWindow.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}#/${args.path}`)
-      appWindow.webContents.openDevTools({ mode: 'bottom' })
+      appWindow.webContents.openDevTools({ mode: 'undocked' })
     } else {
       createProtocol('app')
       await appWindow.loadURL(`app://./index.html#/${args.path}`)

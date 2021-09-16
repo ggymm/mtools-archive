@@ -71,7 +71,7 @@ export default {
       const { title, window } = apps[key]
       msgSender(`mtools:open-app`, {
         title: title,
-        path: key, frame: window.frame,
+        path: key, maximize: window.maximize, frame: window.frame,
         width: window.width, height: window.height,
         minWidth: window.minWidth, minHeight: window.minHeight
       })

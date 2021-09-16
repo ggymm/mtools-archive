@@ -36,6 +36,7 @@ async function createWindow() {
     fullscreenable: false,
     webPreferences: {
       devTools: true,
+      webviewTag: true,
       webSecurity: false,
       nodeIntegration: true,
       contextIsolation: false,
