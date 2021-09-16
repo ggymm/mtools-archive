@@ -26,6 +26,16 @@ const routes = [
     component: () => import('@/views/postman/index.vue')
   },
   {
+    path: '/redis',
+    name: 'RedisCli',
+    component: () => import('@/views/redis/index.vue')
+  },
+  {
+    path: '/android',
+    name: 'Android',
+    component: () => import('@/views/android/index.vue')
+  },
+  {
     path: '/magnet',
     name: 'Magnet',
     component: () => import('@/views/magnet/index.vue')
