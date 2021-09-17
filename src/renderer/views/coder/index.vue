@@ -2,7 +2,7 @@
   <div class="coder-app">
     <el-tabs>
       <el-tab-pane label="Java代码生成">
-        <el-form ref="javaConfig" :model="javaConfig" size="medium" label-width="160px">
+        <el-form ref="javaConfig" :model="javaConfig" size="small" label-width="160px">
           <el-form-item label="数据库">
             <el-select v-model="javaConfig.databaseId" @change="handleDBChange($event, 'java')">
               <el-option
@@ -35,7 +35,7 @@
             <div class="options">
               <div>
                 <el-checkbox v-model="javaConfig.outputCover">覆盖存在文件</el-checkbox>
-                <el-checkbox v-model="javaConfig.onlyEntity">只生成实体类</el-checkbox>
+                <el-checkbox v-model="javaConfig.onlyEntity">只生成实体类和Mapper</el-checkbox>
               </div>
               <div>
                 <el-checkbox v-model="javaConfig.useLombok" disabled>使用Lombok</el-checkbox>
@@ -95,7 +95,7 @@
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="Go代码生成">
-        <el-form ref="goConfig" :model="goConfig" size="medium" label-width="160px">
+        <el-form ref="goConfig" :model="goConfig" size="small" label-width="160px">
           <el-form-item label="数据库">
             <el-select v-model="goConfig.databaseId" @change="handleDBChange($event, 'go')">
               <el-option
