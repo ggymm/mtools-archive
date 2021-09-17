@@ -3,7 +3,7 @@
     <div class="top-bar">
       <div class="logo">
         <svg class="icon" aria-hidden="true">
-          <use xlink:href="#toolkit" />
+          <use xlink:href="#icon-toolkit" />
         </svg>
       </div>
       <div class="title">开发工具箱</div>
