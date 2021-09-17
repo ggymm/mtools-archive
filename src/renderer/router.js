@@ -31,11 +31,6 @@ const routes = [
     component: () => import('@/views/redis/index.vue')
   },
   {
-    path: '/android',
-    name: 'Android',
-    component: () => import('@/views/android/index.vue')
-  },
-  {
     path: '/magnet',
     name: 'Magnet',
     component: () => import('@/views/magnet/index.vue')
