@@ -14,17 +14,17 @@
       <el-button
         type="primary"
         size="small"
-        @click="editorViewVisible = !editorViewVisible"
+        @click="editorFormVisible = !editorFormVisible"
       >
-        {{ editorViewVisible ? "隐藏" : "显示" }}右侧树视图
+        {{ editorFormVisible ? "隐藏" : "显示" }}右侧树视图
       </el-button>
     </div>
     <div class="json-editor">
       <div v-show="editorCodeVisible" class="json-code">
         <div ref="jsoneditorCode" class="jsoneditor-container" />
       </div>
-      <div v-show="editorViewVisible" class="json-view">
-        <div ref="jsoneditorView" class="jsoneditor-container" />
+      <div v-show="editorFormVisible" class="json-form">
+        <div ref="jsoneditorForm" class="jsoneditor-container" />
       </div>
     </div>
   </div>
@@ -40,8 +40,8 @@ export default {
     return {
       editorCode: null,
       editorCodeVisible: true,
-      editorView: null,
-      editorViewVisible: true
+      editorForm: null,
+      editorFormVisible: true
     }
   },
   mounted() {
@@ -58,15 +58,15 @@ export default {
           enableTransform: false
         })
       }
-      if (!this.editorView) {
-        const container = this.$refs.jsoneditorView
-        this.editorView = new JSONEditor(container, {
-          mode: 'view'
+      if (!this.editorForm) {
+        const container = this.$refs.jsoneditorForm
+        this.editorForm = new JSONEditor(container, {
+          mode: 'form'
         })
       }
     },
     handleCodeToView() {
-      this.editorView.set(this.editorCode.get())
+      this.editorForm.set(this.editorCode.get())
     },
     handleCodeToJava() {
 
