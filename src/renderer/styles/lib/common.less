@@ -16,6 +16,28 @@
     position: relative;
     display: flex;
     flex-direction: column;
+
+    .pane-resize-handle {
+      position: absolute;
+      box-sizing: border-box;
+
+      &.ns {
+        padding: 0 4px;
+        top: 0;
+        bottom: 0;
+        right: -4px;
+        cursor: ew-resize;
+
+        .pane-resize-handle__body {
+          width: 1px;
+          height: 100%;
+        }
+      }
+
+      .pane-resize-handle__body {
+        background: #ededed;
+      }
+    }
   }
 }
 
