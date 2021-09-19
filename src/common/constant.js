@@ -12,6 +12,11 @@ export const apps = {
     title: 'JSON工具集',
     window: { width: 1200, height: 900, frame: true }
   },
+  develop: {
+    icon: 'develop',
+    title: '开发工具集',
+    window: { width: 800, height: 600, frame: true }
+  },
   postman: {
     icon: 'postman',
     title: '接口调试工具',
