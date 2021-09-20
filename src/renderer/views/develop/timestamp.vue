@@ -1,7 +1,11 @@
 <template>
-  <el-form ref="javaConfig" size="small" label-width="80px">
-    <el-form-item label="当前时间">
-      <span>当前时间</span>
+  <el-form ref="javaConfig" size="medium" label-width="120px">
+    <el-form-item label="当前时间戳">
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-button type="text" @click="chooseTimestamp">{{ currentTimestamp }}</el-button>
+        </el-col>
+      </el-row>
     </el-form-item>
     <el-form-item label="时间戳">
       <el-row :gutter="20">
@@ -15,7 +19,7 @@
           </el-select>
         </el-col>
         <el-col :span="3">
-          <el-button style="width: 100%" type="primary">转换</el-button>
+          <el-button style="width: 100%" type="primary" @click="toDatetime">转换</el-button>
         </el-col>
         <el-col :span="8">
           <el-input v-model="timestamp.datetime" />
@@ -28,7 +32,7 @@
           <el-date-picker v-model="datetime.value" style="width: 100%;" type="datetime" />
         </el-col>
         <el-col :span="3">
-          <el-button style="width: 100%" type="primary">转换</el-button>
+          <el-button style="width: 100%" type="primary" @click="toTimestamp">转换</el-button>
         </el-col>
         <el-col :span="8">
           <el-input v-model="datetime.timestamp" />
@@ -45,10 +49,14 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
+
 export default {
   name: 'Timestamp',
   data() {
     return {
+      timer: null,
+      currentTimestamp: null,
       timestamp: {
         value: null,
         unit: 'second',
@@ -60,10 +68,41 @@ export default {
         timestamp: null
       }
     }
+  },
+  mounted() {
+    if (!this.timer) {
+      setInterval(() => {
+        this.currentTimestamp = new Date().getTime()
+      }, 1000)
+    }
+  },
+  methods: {
+    chooseTimestamp() {
+      this.timestamp.value = this.currentTimestamp
+      this.timestamp.unit = 'millisecond'
+    },
+    toDatetime() {
+      switch (this.timestamp.unit) {
+        case 'second':
+          this.timestamp.datetime = dayjs.unix(this.timestamp.value)
+            .format('YYYY-MM-DD HH:mm:ss')
+          break
+        case 'millisecond':
+          this.timestamp.datetime = dayjs(this.timestamp.value)
+            .format('YYYY-MM-DD HH:mm:ss')
+          break
+      }
+    },
+    toTimestamp() {
+      switch (this.datetime.unit) {
+        case 'second':
+          this.datetime.timestamp = dayjs(this.datetime.value).unix()
+          break
+        case 'millisecond':
+          this.datetime.timestamp = dayjs(this.datetime.value).valueOf()
+          break
+      }
+    }
   }
 }
 </script>
-
-<style scoped>
-
-</style>
