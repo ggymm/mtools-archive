@@ -15,6 +15,8 @@ async function openApp(key) {
   })
 }
 
+let tray
+
 export default function createTray(window) {
   let iconPath
   if (is.development) {
@@ -29,7 +31,7 @@ export default function createTray(window) {
     iconPath += ''
   }
 
-  const tray = new Tray(iconPath)
+  tray = new Tray(iconPath)
   const contextMenu = Menu.buildFromTemplate([
     {
       label: '显示窗口',
