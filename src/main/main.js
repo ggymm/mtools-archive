@@ -1,13 +1,19 @@
 'use strict'
-
 import { app, protocol, dialog, ipcMain, BrowserWindow } from 'electron'
 import { is } from 'electron-util'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
+
+import log from 'electron-log'
+
 import registerApis from './events'
 import createAppWindow from './app'
 import createTray from './tray'
 
 let mainWindow
+
+log.transports.file.resolvePath = function() {
+  return 'log/mtools.log'
+}
 
 const isSingleInstance = app.requestSingleInstanceLock()
 if (!isSingleInstance) {

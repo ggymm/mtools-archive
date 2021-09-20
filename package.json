@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "electron-log": "^4.4.1",
     "electron-util": "^0.17.0",
     "element-ui": "^2.15.6",
     "jsoneditor": "^9.5.4",
