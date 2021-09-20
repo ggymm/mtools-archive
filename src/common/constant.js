@@ -15,7 +15,7 @@ export const apps = {
   develop: {
     icon: 'develop',
     title: '开发工具集',
-    window: { width: 800, height: 600, frame: true }
+    window: { width: 960, height: 540, frame: true }
   },
   postman: {
     icon: 'postman',
