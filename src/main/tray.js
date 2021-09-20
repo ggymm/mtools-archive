@@ -20,7 +20,7 @@ export default function createTray(window) {
   if (is.development) {
     iconPath = join(__dirname, '../public/icons/')
   } else {
-    iconPath = ''
+    iconPath = join(__dirname, '../icons/')
   }
 
   if (is.windows) {

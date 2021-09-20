@@ -63,6 +63,12 @@ const vueConfig = {
         directories: {
           output: 'build'
         },
+        extraResources: [
+          {
+            from: 'public/icons/',
+            to: './icons/'
+          }
+        ],
         win: {
           target: [
             {
