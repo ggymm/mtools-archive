@@ -16,6 +16,7 @@
     "electron-log": "^4.4.1",
     "electron-util": "^0.17.0",
     "element-ui": "^2.15.6",
+    "js-base64": "^3.7.1",
     "jsoneditor": "^9.5.4",
     "uuid": "^8.3.2",
     "vue": "^2.6.11",
