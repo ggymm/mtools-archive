@@ -27,6 +27,11 @@ export const apps = {
     title: 'Redis连接工具',
     window: { width: 1200, height: 900, minWidth: 1200, minHeight: 600, frame: true }
   },
+  emoji: {
+    icon: 'emoji',
+    title: '斗图表情包',
+    window: { width: 1200, height: 900, minWidth: 1200, minHeight: 600, frame: true }
+  },
   video: {
     icon: 'video',
     title: '音视频工具箱',

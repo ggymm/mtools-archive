@@ -36,6 +36,11 @@ const routes = [
     component: () => import('@/views/redis/index.vue')
   },
   {
+    path: '/emoji',
+    name: 'Emoji',
+    component: () => import('@/views/emoji/index.vue')
+  },
+  {
     path: '/magnet',
     name: 'Magnet',
     component: () => import('@/views/magnet/index.vue')
