@@ -28,3 +28,16 @@ export default {
   }
 }
 </script>
+<style lang="less">
+.develop-app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+
+  .el-tabs {
+    width: 100%;
+    height: 100%;
+    padding: 10px 20px;
+  }
+}
+</style>

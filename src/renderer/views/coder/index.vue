@@ -300,3 +300,48 @@ export default {
   }
 }
 </script>
+<style lang="less">
+.coder-app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+
+  .el-tabs {
+    flex: 1;
+    padding: 0 100px 20px 40px;
+
+    .el-form {
+      flex: 1;
+
+      .el-form-item__content {
+        display: flex;
+
+        .el-select {
+          flex: 1;
+
+          .el-select__tags {
+            max-height: 60px;
+            overflow: auto;
+          }
+        }
+
+        .el-button {
+          margin-left: 16px;
+        }
+      }
+
+      .options {
+        div {
+          margin-bottom: 10px;
+        }
+      }
+
+      .handler {
+        .el-button:first-child {
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+</style>

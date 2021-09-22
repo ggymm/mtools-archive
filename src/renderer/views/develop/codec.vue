@@ -53,6 +53,7 @@ export default {
           this.output = Base64.encode(this.input)
           break
         case 'url':
+          this.output = encodeURI(this.input)
           break
       }
     },
@@ -62,6 +63,7 @@ export default {
           this.input = Base64.decode(this.output)
           break
         case 'url':
+          this.input = decodeURI(this.output)
           break
       }
     }
