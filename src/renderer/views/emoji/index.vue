@@ -43,16 +43,14 @@ export default {
   watch: {
     search: function(val) {
       console.log(val)
-      const _this = this
       const runSearch = debounce((curr) => {
-        _this.emojiList = []
+        this.emojiList = []
         for (let i = 0, len = data.length; i < len; i++) {
           const { name } = data[i]
           if (name.toLowerCase().indexOf(curr) > 0) {
-            _this.emojiList.push(data[i])
+            this.emojiList.push(data[i])
           }
         }
-        console.log(this.emojiList)
       }, 200)
 
       runSearch(val)
