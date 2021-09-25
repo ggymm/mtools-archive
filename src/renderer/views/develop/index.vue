@@ -7,6 +7,9 @@
       <el-tab-pane label="字符串编解码">
         <codec />
       </el-tab-pane>
+      <el-tab-pane label="进制转换">
+        <hex />
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -14,12 +17,14 @@
 <script>
 import Timestamp from './timestamp'
 import Codec from './codec'
+import Hex from './hex'
 
 export default {
   name: 'Develop',
   components: {
     Timestamp,
-    Codec
+    Codec,
+    Hex
   },
   data() {
     return {
