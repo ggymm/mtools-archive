@@ -10,6 +10,9 @@
       <el-tab-pane label="进制转换">
         <hex />
       </el-tab-pane>
+      <el-tab-pane label="字节转换">
+        <byte />
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -18,17 +21,18 @@
 import Timestamp from './timestamp'
 import Codec from './codec'
 import Hex from './hex'
+import Byte from './byte'
 
 export default {
   name: 'Develop',
   components: {
     Timestamp,
     Codec,
-    Hex
+    Hex,
+    Byte
   },
   data() {
     return {
-
     }
   }
 }
