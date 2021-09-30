@@ -1,2 +1,6 @@
+.idea
+build
+node_modules
+public
 src/renderer/assets/iconfont.js
 src/renderer/assets/iconpark.js
