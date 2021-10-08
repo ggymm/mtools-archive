@@ -80,6 +80,10 @@ async function createWindow() {
   ipcMain.on('mtools:toggle-devtools', () => {
     mainWindow.webContents.toggleDevTools()
   })
+  // 打开关闭开发者工具
+  ipcMain.on('mtools:toggle-devtools-app', (event) => {
+    BrowserWindow.fromWebContents(event.sender).webContents.toggleDevTools()
+  })
   // 最小化
   ipcMain.on('mtools:minimize', (event) => {
     BrowserWindow.fromWebContents(event.sender).minimize()
@@ -93,7 +97,7 @@ async function createWindow() {
     app.exit()
   })
   // 创建窗口
-  ipcMain.on('mtools:open-app', async(e, args) => {
+  ipcMain.on('mtools:open-app', async(event, args) => {
     await createAppWindow(args)
   })
   // 关闭窗口
