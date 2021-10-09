@@ -308,7 +308,7 @@ export default {
 
   .el-tabs {
     flex: 1;
-    padding: 0 100px 20px 40px;
+    padding: 12px 100px 20px 40px;
 
     .el-form {
       flex: 1;
