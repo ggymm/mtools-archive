@@ -69,7 +69,7 @@ export default async function createAppWindow(args) {
 
     if (is.development) {
       await appWindow.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}#/${args.path}`)
-      appWindow.webContents.openDevTools({ mode: 'undocked' })
+      // appWindow.webContents.openDevTools({ mode: 'undocked' })
     } else {
       createProtocol('app')
       await appWindow.loadURL(`app://./index.html#/${args.path}`)
