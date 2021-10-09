@@ -1,6 +1,8 @@
-import { BrowserWindow } from 'electron'
+import { BrowserWindow, Menu } from 'electron'
 import { is } from 'electron-util'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
+
+import { backendStart, backendStatus, backendStop } from './events/backend'
 
 const appWindows = new Set()
 const appWindowTitles = new Set()
@@ -36,8 +38,33 @@ export default async function createAppWindow(args) {
       appWindow.maximize()
     }
 
-    if (args.frame) {
-      appWindow.setMenu(null)
+    if (args.path === 'coder') {
+      const coderMenu = [
+        {
+          label: '启动后台服务',
+          click: function() {
+            backendStart()
+          }
+        },
+        {
+          label: '停止后台服务',
+          click: function() {
+            backendStop()
+          }
+        },
+        {
+          label: '检查后台服务',
+          click: function() {
+            backendStatus()
+          }
+        }
+      ]
+
+      appWindow.setMenu(Menu.buildFromTemplate(coderMenu))
+    } else {
+      if (args.frame) {
+        appWindow.setMenu(null)
+      }
     }
 
     if (is.development) {

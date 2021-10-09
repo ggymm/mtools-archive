@@ -67,6 +67,10 @@ const vueConfig = {
           {
             from: 'public/icons/',
             to: './icons/'
+          },
+          {
+            from: 'public/backend/',
+            to: './backend/'
           }
         ],
         win: {
