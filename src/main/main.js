@@ -24,6 +24,7 @@ if (!isSingleInstance) {
     '请检查是否已经打开了一个客户端！(code:020)'
   )
 } else {
+  app.setAppUserModelId('mtools工具箱')
   app.disableHardwareAcceleration()
   app.allowRendererProcessReuse = false
   app.setPath('userData', `${app.getAppPath()}/userData`)
