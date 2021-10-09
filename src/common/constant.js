@@ -25,7 +25,7 @@ export const apps = {
   redis: {
     icon: 'redis-cli',
     title: 'Redis连接工具',
-    window: { width: 1200, height: 900, minWidth: 1200, minHeight: 600, frame: true }
+    window: { width: 1280, height: 720, minWidth: 1200, minHeight: 600, frame: true }
   },
   emoji: {
     icon: 'emoji',
