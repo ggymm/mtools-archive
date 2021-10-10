@@ -52,6 +52,18 @@ export default function createTray(window) {
       }
     },
     {
+      label: '开发工具集',
+      async click() {
+        await openApp('develop')
+      }
+    },
+    {
+      label: '斗图表情包',
+      async click() {
+        await openApp('emoji')
+      }
+    },
+    {
       label: '帮助文档',
       click: () => {
         process.nextTick(() => {
