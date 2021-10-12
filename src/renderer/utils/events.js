@@ -17,6 +17,14 @@ export function msgHandler(method, args) {
   })
 }
 
+export function msgOn(method, callback) {
+  ipcRenderer.on(method, callback)
+}
+
+export function msgOff(method, callback) {
+  ipcRenderer.removeListener(method, callback)
+}
+
 export function msgSender(method, args) {
   ipcRenderer.send(method, args)
 }
