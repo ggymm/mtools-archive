@@ -1,10 +1,12 @@
 {
   "name": "mtools",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
+    "test": "mocha",
     "update-bqb": "zx scripts/update-bqb.mjs",
     "backend:build": "zx scripts/build-backend.mjs",
+    "release-github": "zx scripts/release-github.mjs",
     "electron:serve": "vue-cli-service electron:serve",
     "electron:build": "vue-cli-service electron:build"
   },
@@ -37,6 +39,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
+    "mocha": "^9.1.2",
     "vue-cli-plugin-electron-builder": "~2.1.1",
     "vue-template-compiler": "^2.6.11",
     "zx": "^4.2.0"
