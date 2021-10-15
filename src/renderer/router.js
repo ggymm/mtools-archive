@@ -26,19 +26,14 @@ const routes = [
     component: () => import('@/views/develop/index.vue')
   },
   {
-    path: '/postman',
-    name: 'Postman',
-    component: () => import('@/views/postman/index.vue')
-  },
-  {
     path: '/redis',
     name: 'RedisCli',
     component: () => import('@/views/redis/index.vue')
   },
   {
-    path: '/emoji',
-    name: 'Emoji',
-    component: () => import('@/views/emoji/index.vue')
+    path: '/download',
+    name: 'Download',
+    component: () => import('@/views/download/index.vue')
   },
   {
     path: '/magnet',
@@ -46,9 +41,9 @@ const routes = [
     component: () => import('@/views/magnet/index.vue')
   },
   {
-    path: '/video',
-    name: 'Video',
-    component: () => import('@/views/video/index.vue')
+    path: '/emoji',
+    name: 'Emoji',
+    component: () => import('@/views/emoji/index.vue')
   }
 ]
 

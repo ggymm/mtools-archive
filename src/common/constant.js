@@ -17,29 +17,24 @@ export const apps = {
     title: '开发工具集',
     window: { width: 960, height: 540, frame: true }
   },
-  postman: {
-    icon: 'postman',
-    title: '接口调试工具',
-    window: { width: 1200, height: 900, minWidth: 1200, minHeight: 600, frame: true }
-  },
   redis: {
     icon: 'redis-cli',
     title: 'Redis连接工具',
     window: { width: 1280, height: 720, minWidth: 1200, minHeight: 600, frame: true }
   },
-  emoji: {
-    icon: 'emoji',
-    title: '斗图表情包',
-    window: { width: 1200, height: 900, minWidth: 1200, minHeight: 600, frame: true }
-  },
-  video: {
-    icon: 'video',
-    title: '音视频工具箱',
-    window: { width: 800, height: 600, frame: true }
+  download: {
+    icon: 'download',
+    title: '下载工具',
+    window: { width: 1280, height: 720, minWidth: 1200, minHeight: 600, frame: true }
   },
   magnet: {
     icon: 'magnet',
     title: '磁力链接搜索',
     window: { width: 1200, height: 600, frame: true }
+  },
+  emoji: {
+    icon: 'emoji',
+    title: '斗图表情包',
+    window: { width: 1200, height: 900, minWidth: 1200, minHeight: 600, frame: true }
   }
 }
