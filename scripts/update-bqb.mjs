@@ -1,4 +1,5 @@
 #!/usr/bin/env zx
+
 import { $, cd } from 'zx'
 import { join } from 'path'
 import { copyFileSync, constants } from 'fs'
