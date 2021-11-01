@@ -13,14 +13,15 @@ const apiLatestRelease = 'https://api.github.com/repos/iawia002/annie/releases/l
 const { data } = await axios.get(apiLatestRelease)
 
 console.log('判断本地的annie版本是否为最新')
-if (!fs.existsSync('public/annie/version')) {
-  fs.writeFileSync('public/annie/version', '0')
+const version = 'public/annie/version'
+if (!fs.existsSync(version)) {
+  fs.writeFileSync(version, '0')
 }
-const currentVersion = fs.readFileSync('public/annie/version')
+const currentVersion = fs.readFileSync(version, 'utf-8')
 const latestVersion = data['tag_name']
 if (currentVersion === latestVersion) {
   console.log('无新版本')
-  process.exit(1)
+  process.exit(0)
 }
 console.log(`存在最新版本: ${latestVersion}`)
 
@@ -34,7 +35,7 @@ for (let i = 0; i < data.assets.length; i++) {
 }
 console.log(JSON.stringify(asset, {}, 2))
 
-console.log('下载最新文件')
+console.log('下载最新文件(使用代理下载)')
 const response = await axios.get(asset['browser_download_url'], {
   method: 'GET',
   responseType: 'stream',
@@ -62,6 +63,8 @@ await response.data.on('data', (chunk) => {
 })
 
 writer.on('finish', () => {
+  console.log('写入最新版本信息')
+  fs.writeFileSync(version, latestVersion)
   console.log('解压下载文件')
   const zip = new StreamZip({
     file: zipName,
