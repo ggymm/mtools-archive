@@ -1,5 +1,6 @@
 export const CHOOSE_FILE = 'mtools:choose-file-dialog'
 export const CHOOSE_FOLDER = 'mtools:choose-folder-dialog'
+export const OPEN_FOLDER = 'mtools:open-folder'
 
 export const apps = {
   coder: {
