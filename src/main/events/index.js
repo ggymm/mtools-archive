@@ -1,6 +1,7 @@
 import { dialog, ipcMain } from 'electron'
 
-import { CHOOSE_FILE, CHOOSE_FOLDER } from '#/constant'
+import { CHOOSE_FILE, CHOOSE_FOLDER, OPEN_FOLDER } from '#/constant'
+import { openFolder } from './fs'
 
 export default function registerApis() {
   // 选择文件
@@ -20,5 +21,9 @@ export default function registerApis() {
     }).then(result => {
       event.sender.send(CHOOSE_FOLDER, callbackId, result.filePaths[0])
     })
+  })
+  // 打开文件夹
+  ipcMain.on(OPEN_FOLDER, async(event, folder) => {
+    await openFolder(folder)
   })
 }
